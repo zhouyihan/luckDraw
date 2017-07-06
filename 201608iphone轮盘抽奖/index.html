@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+
+	<body>
+		<div class="headtop">
+			<img src="img/header.png" />
+		</div>
+		<div class="main">
+			<div class="button">
+				<img src="img/shou.gif" />
+				<div><input type="number" name="" id="" value="" /></div>
+				<img src="img/1.png" class="imginput" />
+			</div>
+			<div class="">
+				<img src="img/draw.png" class="draw" id="lotteryBtn" />
+			</div>
+			<img src="img/activity.png" class="active" onclick="one()" /><img src="img/register.png" class="register" />
+		</div>
+		<div class="footer">
+			<p>容联云通讯官网</p>
+			<p>www.yuntongxun.com</p>
+		</div>
+		<div id="mask">
+
+		</div>
+		<div class="pop-div" id="tu1">
+			<p class="head">活动规则</p>
+			<img src="img/xian.png" />
+			<span class="ptitle">活动奖品</span>
+			<p>蓝牙键盘、蓝牙耳机、100元京东卡、账户余额</p>
+			<span class="ptitle">活动时间</span>
+			<p>2016.08.11-2016.12.31</p>
+			<span class="ptitle">活动规则</span>
+			<p>活动期间注册用户，可获得1次抽奖机会</p>
+			<p class="gift">奖品发送</p>
+			<ul>
+				<li><span class="boldspan">蓝牙键盘、蓝牙耳机：</span>以快递形式发送</li>
+				<li><span class="boldspan">京东卡：</span>以短信形式发送</li>
+				<li><span class="boldspan">账户余额红包：</span>充值到您注册的容联云通讯账号中</li>
+			</ul>
+			<span onclick="hidePop()"><img src="img/ca.png" class="ca"/></span>
+			<p class="cla">在法律允许的范围内，此次活动最终解释权归容联云通讯所有</p>
+		</div>
+		<div class="pop-div-get" id="get">
+			<div class="20">
+				<img src="img/20.png" />
+				<p class="congra">恭喜抽中20元余额红包</p>
+			</div>
+			<div class="50" style="display: none;">
+				<img src="img/50.png" />
+				<p class="congra">恭喜抽中50元余额红包</p>
+			</div>
+
+			<p>余额将自动充值到您的账户，请注意查收</p>
+			<img src="img/sure.png" class="sure" onclick="hidePopGet()" />
+			<div class="clare">
+				<p>容联云通讯官网还有更多新手福利等你来领哦！</p>
+				<p>www.yuntongxun.com</p>
+			</div>
+			<img src="img/x.png" class="x" onclick="hidePopGet()" />
+
+		</div>
+		<div class="pop-div-sorry" id="sorry">
+			<p class="congra">很遗憾，未抽中奖品 </p>
+			<img src="img/sure.png" class="sure" onclick="hidePopSorry()" />
+			<img src="img/x.png" class="x" onclick="hidePopSorry()" />
+		</div>
+		<script src="js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/jQueryRotate.2.2.js"></script>
+		<script src="js/jquery.easing.min.js"></script>
+		<script type="text/javascript">
+			$(".imginput").click(function() {
+				$(this).hide();
+				$(this).siblings('div').children('input').show();
+				//$(this).siblings('div').children('input').height($('#imginput').height());
+				$(this).siblings('div').children('input').focus();
+			})
+			hoverChange('.active', 'img/activity.png');
+			hoverChange('.register', 'img/register.png');
+			hoverChange('.ca', 'img/ca.png');
+			hoverChange('.draw', 'img/draw.png');
+			hoverChange('.sure', 'img/sure.png');
+			hoverChange('.x', 'img/x.png');
+
+			function hoverChange(somebody, name) {
+				var nameh = name.replace('.', '_h.');
+				$(somebody).bind("touchstart", function() {
+					$(this).attr("src", nameh);
+				});
+				$(somebody).bind("touchend", function() {
+					$(this).attr("src", name);
+				})
+			}
+
+			function one() {
+				$("#mask").show();
+				$("#tu1").show();
+			}
+
+			function hidePop() {
+				$("#mask").hide();
+				$("#tu1").hide();
+				$("body").unbind("touchmove");
+			}
+
+			function hidePopGet() {
+				$("#mask").hide();
+				$("#get").hide();
+				$("body").unbind("touchmove");
+			}
+
+			function hidePopSorry() {
+				$("#mask").hide();
+				$("#sorry").hide();
+				$("body").unbind("touchmove");
+			}
+
+			$(function() {
+				var timeOut = function() { //超时函数
+					$("#lotteryBtn").rotate({
+						angle: 0,
+						duration: 10000,
+						animateTo: 2160, //这里是设置请求超时后返回的角度，所以应该还是回到最原始的位置，2160是因为我要让它转6圈，就是360*6得来的
+						callback: function() {
+							hidePopSorry();
+							//alert('亲！没有中奖哦！！')
+						}
+					});
+				};
+				var rotateFunc = function(awards, angle, text) { //awards:奖项，angle:奖项对应的角度
+					$('#lotteryBtn').stopRotate();
+					$("#lotteryBtn").rotate({
+						angle: 0,
+						duration: 5000,
+						animateTo: angle + 1440, //angle是图片上各奖项对应的角度，1440是我要让指针旋转4圈。所以最后的结束的角度就是这样子^^.
+						callback: function() {
+							//alert(text)
+							if(text == '20') {
+								$('.20').show();
+								$('.50').hide();
+								$("#mask").show();
+								$("#get").show();
+								$("body").bind("touchmove", function(event) {
+									event.preventDefault();
+								}, false);
+							} else if(text == '50') {
+								$('.50').show();
+								$('.20').hide();
+								$("#mask").show();
+								$("#get").show();
+								$("body").bind("touchmove", function(event) {
+									event.preventDefault();
+								}, false);
+							} else {
+								$("#mask").show();
+								$("#sorry").show();
+								$("body").bind("touchmove", function(event) {
+									event.preventDefault();
+								}, false);
+							}
+						}
+					});
+				};
+
+				$("#lotteryBtn").rotate({
+					bind: {
+						click: function() {
+							var time = [1];
+							time = time[Math.floor(Math.random() * time.length)];
+							if(time == 0) {
+								timeOut(); //网络超时
+							}
+							if(time == 1) {
+								var data = [1, 2, 3]; //返回的数组
+								data = data[Math.floor(Math.random() * data.length)];
+								if(data == 1) {
+									rotateFunc(1, 30, '20');
+								}
+								if(data == 2) {
+									rotateFunc(2, 270, '50');
+								}
+								if(data == 3) {
+									rotateFunc(3, 150, '没有中奖')
+								}
+								/*if(data==0){
+									var angle = [67,112,202,292,337];
+										angle = angle[Math.floor(Math.random()*angle.length)]
+									rotateFunc(0,angle,'很遗憾，这次您未抽中奖')
+								}*/
+							}
+						}
+					}
+
+				});
+
+			})
+		</script>
+
+	</body>
+
+</html>
